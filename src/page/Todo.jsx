@@ -128,7 +128,7 @@ const handleupdate=(data)=>{
        
           
           <span className="flex items-center gap-2 bg-white text-indigo-400 px-2 rounded-md py-2 text-sm cursor-pointer">
-            edit <MdEdit />
+          <span className="hidden md:block">edit</span> <MdEdit />
           </span>
            
           <span onClick={()=>handleDeleteTodo(item.id)} className="  flex items-center gap-2 bg-red-400 border text-white px-2 rounded-md py-2 text-sm cursor-pointer">
