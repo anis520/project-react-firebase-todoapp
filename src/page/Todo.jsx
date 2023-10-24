@@ -111,7 +111,7 @@ const handleupdate=(data)=>{
   return (
          <div key={key} className=" flex gap-2 items-start  bg-indigo-400 p-2 font-semibold text-lg      rounded-md px-4">
           <span className="text-white">{item.text} <br />
-          <p className="text-sm bg-slate-200 text-black px-1 rounded-md mt-2">{ GetDate(item?.time?.seconds)}</p>
+          <p className="text-sm bg-slate-200 text-black px-1 rounded-md mt-2 w-[140px] text-center ">{ GetDate(item?.time?.seconds)}</p>
            </span>
         
            <div className=" ms-auto" onClick={()=>handleupdate(item)}>
