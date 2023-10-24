@@ -1,13 +1,21 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, onSnapshot, updateDoc } from "firebase/firestore"
 import { firebaseapp } from ".."
-const db = getFirestore(firebaseapp)
+export const db = getFirestore(firebaseapp)
 
 
 
 
-
+// add data 
  export const addDocoment=async(collectionName,data)=>{
    return  await addDoc(collection(db,collectionName),data)
+
+ }
+ 
+// add data 
+ export const updateDocoment=async(collectionName,data)=>{
+   return  await updateDoc(doc(db,collectionName,data.id),data)
+             // const single= await updateDoc(doc(db,'todos','KsaVQKpIQiEHtO6Q6pC1'),{email:"raza soinik",trash:"sasdf00",pho:"asdf",text:"dada vai"})
+
 
  }
  export const deleteDocoment=async(collectionName,id)=>{
@@ -15,6 +23,9 @@ const db = getFirestore(firebaseapp)
    return await deleteDoc(doc(db,collectionName,id))
 
  }
+
+
+//  get data 
  export const getAllData=async(collectionName)=>{
 
   const todo=await getDocs(collection(db,collectionName))
@@ -30,8 +41,41 @@ const db = getFirestore(firebaseapp)
  }
 
 
+// get realtime data 
+export const getRealtimeData=(collectionName,stateName)=>{
+  onSnapshot(collection(db,collectionName),(snapshot)=>{
+    const datalist=[]
+    snapshot.docs.forEach(item=>{
+       datalist.push({...item.data(),id:item.id})
+    })
+    stateName(datalist)
+  })
+}
 
 
+
+// get time from seconds
+
+export const GetDate=(data)=> {
+  var milliseconds = data * 1000;
+  var date = new Date(milliseconds);
+  return date.toDateString(); // You can format the date as per your requirement
+}
+// get time from seconds
+
+export const GetTimeAndDate=(data)=> {
+  var milliseconds = data * 1000;
+  var date = new Date(milliseconds);
+  var year = date.getFullYear();
+  var month = ("0" + (date.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed
+  var day = ("0" + date.getDate()).slice(-2);
+  var hours = ("0" + date.getHours()).slice(-2);
+  var minutes = ("0" + date.getMinutes()).slice(-2);
+  var seconds = ("0" + date.getSeconds()).slice(-2);
+  var formattedDate = year + "-" + month + "-" + day;
+  var formattedTime = hours + ":" + minutes + ":" + seconds;
+  return formattedDate + " " + formattedTime;
+}
 
            // const single= await getDoc(doc(db,'todos','HmK3CCstcOJfquhnQHl6'))
           // const single= await deleteDoc(doc(db,'todos','kaja5555'))

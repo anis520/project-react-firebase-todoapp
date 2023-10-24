@@ -8,17 +8,18 @@ import { BiLoaderCircle, BiSolidTrashAlt } from "react-icons/bi";
 import Modal from "../components/modal/Modal";
 import avatar from "../assets/avatar.jpg";
 import { Helmet } from "react-helmet";
-import { addDocoment, deleteDocoment, getAllData } from "../firebase/services/AllService";
- 
+import { GetDate, GetTimeAndDate, addDocoment, deleteDocoment, getAllData, getRealtimeData, updateDocoment } from "../firebase/services/AllService";
+import { serverTimestamp } from "firebase/firestore";
+  
  
 const Todo = () => {
-  const [input ,setinput]=useState({email:'anis@gmail.com',photo:"anis.png",text:"",trash:false})
+  const [input ,setinput]=useState({email:'anis@gmail.com',photo:"anis.png",text:"",trash:false,time:serverTimestamp(),status:false})
   const [modal, setmodal] = useState(false);
   const [AllTodo,setAllTodo]=useState(null)
  
 
 
-
+ 
 
  const handleInput=(e)=>{
   setinput((prevstate)=>({
@@ -31,29 +32,38 @@ const Todo = () => {
  const handleAddTodo=()=>{
   addDocoment('todos',input)
   setmodal(false)
+  setinput({email:'anis@gmail.com',photo:"anis.png",text:"",trash:false,time:serverTimestamp(),status:false})
  }
 
- useEffect(() => {
 
-  (async function  immediateFunction() {
+ const getTodo=async()=>{
     const data= await getAllData('todos')
    setAllTodo(data) 
-  })()
+ }
 
+const handleRealtimeData=()=>{
+  getRealtimeData('todos',setAllTodo)
+ 
+  
+}
 
+useEffect(() => {
+handleRealtimeData()
+// getTodo()
+
+}, [])
  
 
-}, [modal])
- 
-
-console.log(AllTodo);
+// console.log(AllTodo[0].time.seconds);
 const handleDeleteTodo=(id)=>{
   console.log(id);
-deleteDocoment('todos',"lhldWAodIruSLWK7BA20")
+deleteDocoment('todos',id)
 }
 
  
-
+const handleupdate=(data)=>{
+  updateDocoment('todos',{...data,status:!data.status})
+}
   return (
     <div className="w-full ">
       
@@ -94,27 +104,41 @@ deleteDocoment('todos',"lhldWAodIruSLWK7BA20")
           Add {}
         </button>
  
-     
+     {!AllTodo&& <h3 className="p-3 bg-slate-200 animate-pulse flex  rounded-md gap-4">  <span className="bg-slate-400   p-2 text-white font-semibold md:text-xl rounded-md animate-pulse w-7/12"> Loading . . . . .</span> <span className="bg-slate-400  w-5/12 rounded-md p-2"></span> </h3>}
+     {!AllTodo&& <h3 className="p-3 bg-slate-200 animate-pulse flex  rounded-md gap-4">  <span className="bg-slate-400   p-2 text-white font-semibold md:text-xl rounded-md animate-pulse w-3/12"></span> <span className="bg-slate-400  w-9/12 rounded-md p-2"></span> </h3>}
         {/* single todo  */}
 {AllTodo?.reverse().map((item ,key)=>{
   return (
          <div key={key} className=" flex gap-2 items-start  bg-indigo-400 p-2 font-semibold text-lg      rounded-md px-4">
-          <span className="text-white">{item.text}</span>
-          <span className="  ms-auto bg-white text-yellow-400 p-2 rounded-md text-sm  cursor-pointer">
-            panding
-          </span>
+          <span className="text-white">{item.text} <br />
+          <p className="text-sm bg-slate-200 text-black px-1 rounded-md mt-2">{ GetDate(item?.time?.seconds)}</p>
+           </span>
+        
+           <div className=" ms-auto" onClick={()=>handleupdate(item)}>
 
+        {item.status  ?   <span className="   bg-green-400 text-white p-2 rounded-md text-sm  cursor-pointer">
+        complete
+          </span>:   <span className="    bg-yellow-400 text-black p-2 rounded-md text-sm  cursor-pointer">
+        pending
+          </span>
+        }
+     
+        </div>
+  
+       
+          
           <span className="flex items-center gap-2 bg-white text-indigo-400 px-2 rounded-md py-2 text-sm cursor-pointer">
             edit <MdEdit />
           </span>
+           
           <span onClick={()=>handleDeleteTodo(item.id)} className="  flex items-center gap-2 bg-red-400 border text-white px-2 rounded-md py-2 text-sm cursor-pointer">
             delete <BiSolidTrashAlt />
           </span>
-          <span className="ml-4 ">
+          {/* <span className="ml-4 "> */}
             {/* <BiLoaderCircle className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
-            <MdCloudDone className="w-8 h-6 bg-white rounded-md cursor-pointer " />
+            {/* <MdCloudDone className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
             {/* <BiSolidTrash className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
-          </span>
+          {/* </span> */}
         </div>
   )
 })}

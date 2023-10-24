@@ -5,8 +5,9 @@ import {
   AiOutlineAppstoreAdd,
 } from "react-icons/ai";
 import { useLocation } from "react-router-dom";
-import { BsCardChecklist, BsList } from "react-icons/bs";
+import { BsCardChecklist, BsFillTrashFill, BsList } from "react-icons/bs";
 import { TbBuildingCommunity } from "react-icons/tb";
+import { FaArrowsSpin } from "react-icons/fa6";
 import avatarlogo from "../../assets/avatar.jpg";
 import "./index.css";
 import { MdAccountCircle, MdHome, MdQuestionAnswer } from "react-icons/md";
@@ -127,6 +128,15 @@ const Navbar = () => {
             {" "}
             {!nav && "Setting"}{" "}
             <AiFillSetting className={`${nav && "text-2xl"}`} />
+          </li>
+          <li
+            className={`flex items-center  ${
+              nav ? "justify-center" : "justify-between"
+            } gap-3 hover:bg-indigo-400   cursor-pointer transition  p-1 px-2 bg-gray-200 hover:text-white rounded-md font-semibold`}
+          >
+            {" "}
+            {!nav && "Recover"}{" "}
+            <FaArrowsSpin className={`${nav && "text-2xl"}`} />
           </li>
         </ul>
         <div className="bg-gray-400 text-black font-semibold absolute bottom-5 right-5 flex rounded-md px-4 py-1 gap-2 ">
