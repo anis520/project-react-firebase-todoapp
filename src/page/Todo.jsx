@@ -132,7 +132,7 @@ const handleupdate=(data)=>{
           </span>
            
           <span onClick={()=>handleDeleteTodo(item.id)} className="  flex items-center gap-2 bg-red-400 border text-white px-2 rounded-md py-2 text-sm cursor-pointer">
-            delete <BiSolidTrashAlt />
+           <span className="hidden md:block">delete</span>  <BiSolidTrashAlt />
           </span>
           {/* <span className="ml-4 "> */}
             {/* <BiLoaderCircle className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
