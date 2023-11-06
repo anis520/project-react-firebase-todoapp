@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
- // TODO: Add SDKs for Firebase products that you want to use
+import { getStorage } from "firebase/storage";
+// TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -12,10 +13,9 @@ const firebaseConfig = {
   storageBucket: "todoapp-e00da.appspot.com",
   messagingSenderId: "685567380282",
   appId: "1:685567380282:web:dd03e7ec6ee46471cf5e03",
-  measurementId: "G-54NDK5MD40"
+  measurementId: "G-54NDK5MD40",
 };
-
- 
 
 // Initialize Firebase
 export const firebaseapp = initializeApp(firebaseConfig);
+export const storage = getStorage(firebaseapp);

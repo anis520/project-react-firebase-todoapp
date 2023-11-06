@@ -6,43 +6,43 @@ import ConfettiExplosion from "react-confetti-explosion";
 
 import {
   MdClose,
-  MdCloudDone,
   MdDelete,
   MdEdit,
   MdOutlineAddPhotoAlternate,
 } from "react-icons/md";
-import {
-  BiLoaderCircle,
-  BiSolidSelectMultiple,
-  BiSolidTrashAlt,
-} from "react-icons/bi";
+import { BiLoaderCircle, BiSolidSelectMultiple } from "react-icons/bi";
 import Modal from "../components/modal/Modal";
 import avatar from "../assets/avatar.jpg";
 import { Helmet } from "react-helmet";
 import {
   GetDate,
-  GetTimeAndDate,
   addDocoment,
   deleteDocoment,
-  getAllData,
-  getRealtimeData,
+  getQueryData,
   updateDocoment,
+  uploadFile,
+  uploadFileWithlink,
 } from "../firebase/services/AllService";
 import { serverTimestamp } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../firebase";
 
 const Todo = () => {
   const [statusok] = useState(new Audio(clickSoundStatusOk));
   const [statusNotok] = useState(new Audio(clickSoundStatusNotOk));
   const [isExploding, setIsExploding] = useState([false, null]);
+  // const [photo, setPhoto] = useState(null);
 
   const [input, setinput] = useState({
     email: "anis@gmail.com",
-    photo: "",
+    photo: null,
     text: "",
     trash: false,
     time: serverTimestamp(),
     status: false,
   });
+
+  console.log(input);
   const [modal, setmodal] = useState(false);
   const [AllTodo, setAllTodo] = useState(null);
 
@@ -53,12 +53,24 @@ const Todo = () => {
     }));
   };
 
-  const handleAddTodo = () => {
-    addDocoment("todos", input);
+  const handleAddTodo = async () => {
     setmodal(false);
+
+    if (input.photo) {
+      const data = await uploadBytesResumable(
+        ref(storage, input.photo.name),
+        input.photo
+      );
+      const photourl = await getDownloadURL(data.ref);
+
+      await addDocoment("todos", { ...input, photo: photourl });
+    } else {
+      addDocoment("todos", input);
+    }
+
     setinput({
       email: "anis@gmail.com",
-      photo: "",
+      photo: null,
       text: "",
       trash: false,
       time: serverTimestamp(),
@@ -66,23 +78,16 @@ const Todo = () => {
     });
   };
 
-  const getTodo = async () => {
-    const data = await getAllData("todos");
-    setAllTodo(data);
-  };
-
   const handleRealtimeData = () => {
-    getRealtimeData("todos", setAllTodo);
+    // getRealtimeData("todos", setAllTodo);
+    getQueryData("todos", setAllTodo, "status");
   };
 
   useEffect(() => {
     handleRealtimeData();
-    // getTodo()
   }, []);
 
-  // console.log(AllTodo[0].time.seconds);
   const handleDeleteTodo = (id) => {
-    console.log(id);
     deleteDocoment("todos", id);
   };
 
@@ -92,7 +97,7 @@ const Todo = () => {
     data.status
       ? setIsExploding([false, null])
       : setIsExploding([true, data.id]);
-    console.log(isExploding);
+
     updateDocoment("todos", { ...data, status: !data.status });
   };
   return (
@@ -116,7 +121,13 @@ const Todo = () => {
         ></textarea>
 
         <label htmlFor="photo">
-          <input type="file" name="" id="photo" className="hidden " />
+          <input
+            type="file"
+            name="photo"
+            id="photo"
+            className="hidden"
+            onChange={(e) => setinput({ ...input, photo: e.target.files[0] })}
+          />
           <MdOutlineAddPhotoAlternate className=" w-64   h-44 md:h-64 border-4 border-black rounded-md  cursor-pointer" />
         </label>
         <button
@@ -141,7 +152,7 @@ const Todo = () => {
         {!AllTodo && (
           <h3 className="p-3 bg-slate-200 animate-pulse flex  rounded-md gap-4">
             {" "}
-            <span className="bg-slate-400   p-2 text-white font-semibold md:text-xl rounded-md animate-pulse w-7/12">
+            <span className="bg-slate-400   p-2 text-white font-semibold md:text-xl rounded-md animate-pulse w-6/12">
               {" "}
               Loading . . . . .
             </span>{" "}
@@ -165,7 +176,12 @@ const Todo = () => {
         {AllTodo?.map((item) => {
           return (
             <>
-              <div key={item.id} className="bg-slate-300 p-3 rounded-md ">
+              <div
+                key={item.id}
+                className={` bg-slate-300 p-3 rounded-md  ${
+                  item.status && "opacity-50"
+                } `}
+              >
                 <div className="bg-white p-2 rounded-md ">
                   <div className="float-right w-4/12   sm:w-3/12 p-1 pr-0   md:pr-10 lg:pr-0 flex justify-between md:justify-center  gap-1  md:gap-3">
                     {isExploding[0] == true && isExploding[1] == item.id && (
@@ -183,16 +199,16 @@ const Todo = () => {
                       </span>{" "}
                       <span className="">
                         {item.status ? (
-                          <BiSolidSelectMultiple className="h-7 w-7" />
+                          <BiSolidSelectMultiple className="h-6 w-6" />
                         ) : (
-                          <BiLoaderCircle className="h-7 w-7" />
+                          <BiLoaderCircle className="h-6 w-6" />
                         )}
                       </span>
                     </span>
                     <span className="bg-blue-400 text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1">
                       {" "}
                       <span className="hidden md:block">edit</span>{" "}
-                      <MdEdit className="h-7 w-7" />{" "}
+                      <MdEdit className="h-6 w-6" />{" "}
                     </span>
                     <span
                       onClick={() => handleDeleteTodo(item.id)}
@@ -200,7 +216,7 @@ const Todo = () => {
                     >
                       {" "}
                       <span className="hidden md:block">delete</span>{" "}
-                      <MdDelete className="h-7 w-7" />{" "}
+                      <MdDelete className="h-6 w-6" />{" "}
                     </span>
                   </div>
 
@@ -224,7 +240,7 @@ const Todo = () => {
                     <div className="relative w-full md:w-3/12  p-2">
                       <MdClose className="absolute right-3 md:right-1 top-3 bg-red-500 hover:scale-105 duration-500 text-white h-6 w-6 rounded-md cursor-pointer " />
                       <img
-                        src={avatar}
+                        src={item.photo}
                         alt=""
                         className="w-full md:ml-2   rounded-md border-slate-200 border-2"
                       />{" "}
