@@ -35,7 +35,7 @@ const Todo = () => {
   // const [photo, setPhoto] = useState(null);
 
   const [input, setinput] = useState({
-    email: "anis@gmail.com",
+    email: localStorage.getItem("user"),
     photo: null,
     text: "",
     trash: false,
@@ -70,7 +70,7 @@ const Todo = () => {
     }
 
     setinput({
-      email: "anis@gmail.com",
+      email: localStorage.getItem("user"),
       photo: null,
       text: "",
       trash: false,

@@ -11,13 +11,14 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { firebaseapp, storage } from "..";
+import { auth, firebaseapp, storage } from "..";
 import {
   getDownloadURL,
   ref,
   uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
+import { signOut } from "firebase/auth";
 export const db = getFirestore(firebaseapp);
 
 // add data
@@ -73,6 +74,12 @@ export const getQueryData = (collectionName, stateName, queryfor) => {
       stateName(datalist);
     }
   );
+};
+
+///sing out
+export const singout = () => {
+  signOut(auth);
+  localStorage.removeItem("user");
 };
 
 // upload file

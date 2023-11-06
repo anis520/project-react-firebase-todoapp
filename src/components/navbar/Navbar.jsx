@@ -4,7 +4,7 @@ import {
   AiFillSetting,
   AiOutlineAppstoreAdd,
 } from "react-icons/ai";
-import { useLocation } from "react-router-dom";
+import { redirect, useLocation } from "react-router-dom";
 import { BsCardChecklist, BsFillTrashFill, BsList } from "react-icons/bs";
 import { TbBuildingCommunity } from "react-icons/tb";
 import { FaArrowsSpin } from "react-icons/fa6";
@@ -12,9 +12,12 @@ import avatarlogo from "../../assets/avatar.jpg";
 import "./index.css";
 import { MdAccountCircle, MdHome, MdQuestionAnswer } from "react-icons/md";
 import { Link } from "react-router-dom";
-const Navbar = ({nav,setnav}) => {
+import { singout } from "../../firebase/services/AllService";
+const Navbar = ({ nav, setnav }) => {
   const location = useLocation();
- 
+  const handlesingout = () => {
+    singout();
+  };
   return (
     <>
       {/* destop navbar  */}
@@ -58,7 +61,10 @@ const Navbar = ({nav,setnav}) => {
             <button className="bg-indigo-400 text-white font-semibold px-3 rounded-md ">
               Edit
             </button>
-            <button className="bg-red-500 text-white font-semibold px-2 rounded-md ">
+            <button
+              onClick={handlesingout}
+              className="bg-red-500 text-white font-semibold px-2 rounded-md "
+            >
               logout
             </button>
           </div>

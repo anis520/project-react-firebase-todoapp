@@ -1,16 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "../components/layout";
-import Home from "../page/Home";
-import Todo from "../page/Todo";
-import Group from "../page/Group";
+import publicRouter from "./PublicRoute";
+import privateRouter from "./PrivateRoute";
 
-export const router = createBrowserRouter([
-  {
-    element: <Layout />,
-    children: [
-      { path: "/", element: <Home /> },
-      { path: "/todo", element: <Todo /> },
-      { path: "/community", element: <Group /> },
-    ],
-  },
-]);
+// create browser router
+
+const router = createBrowserRouter([...publicRouter, ...privateRouter]);
+
+/// export  router
+export default router;
