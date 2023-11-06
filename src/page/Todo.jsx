@@ -167,7 +167,7 @@ const Todo = () => {
             <>
               <div key={item.id} className="bg-slate-300 p-3 rounded-md ">
                 <div className="bg-white p-2 rounded-md ">
-                  <div className="float-right w-4/12  sm:w-3/12 p-1 pr-0   md:pr-10 lg:pr-0 flex justify-center gap-1 md:gap-3">
+                  <div className="float-right w-4/12   sm:w-3/12 p-1 pr-0   md:pr-10 lg:pr-0 flex justify-between md:justify-center  gap-1  md:gap-3">
                     {isExploding[0] == true && isExploding[1] == item.id && (
                       <ConfettiExplosion />
                     )}
@@ -181,17 +181,18 @@ const Todo = () => {
                       <span className="hidden md:block">
                         {item.status ? "completed" : "complete"}
                       </span>{" "}
-                      {item.status ? (
-                        <BiSolidSelectMultiple />
-                      ) : (
-                        <BiLoaderCircle />
-                      )}
+                      <span className="">
+                        {item.status ? (
+                          <BiSolidSelectMultiple className="h-7 w-7" />
+                        ) : (
+                          <BiLoaderCircle className="h-7 w-7" />
+                        )}
+                      </span>
                     </span>
                     <span className="bg-blue-400 text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1">
                       {" "}
-                      <span className="hidden md:block">
-                        edit
-                      </span> <MdEdit />{" "}
+                      <span className="hidden md:block">edit</span>{" "}
+                      <MdEdit className="h-7 w-7" />{" "}
                     </span>
                     <span
                       onClick={() => handleDeleteTodo(item.id)}
@@ -199,7 +200,7 @@ const Todo = () => {
                     >
                       {" "}
                       <span className="hidden md:block">delete</span>{" "}
-                      <MdDelete />{" "}
+                      <MdDelete className="h-7 w-7" />{" "}
                     </span>
                   </div>
 
