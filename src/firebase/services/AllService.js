@@ -30,8 +30,8 @@ export const updateDocoment = async (collectionName, data) => {
   return await updateDoc(doc(db, collectionName, data.id), data);
   // const single= await updateDoc(doc(db,'todos','KsaVQKpIQiEHtO6Q6pC1'),{email:"raza soinik",trash:"sasdf00",pho:"asdf",text:"dada vai"})
 };
-export const deleteDocoment = async (collectionName, id) => {
-  return await deleteDoc(doc(db, collectionName, id));
+export const deleteDocoment = async (collectionName, data) => {
+  return await deleteDoc(doc(db, collectionName, data.id));
 };
 
 //  get data

@@ -3,6 +3,7 @@ import { Reorder } from "framer-motion";
 import clickSoundStatusOk from "../../public/Sounds/statusok.mp3";
 import clickSoundStatusNotOk from "../../public/Sounds/status!ok.mp3";
 import ConfettiExplosion from "react-confetti-explosion";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 import {
   MdClose,
@@ -87,8 +88,8 @@ const Todo = () => {
     handleRealtimeData();
   }, []);
 
-  const handleDeleteTodo = (id) => {
-    deleteDocoment("todos", id);
+  const handleDeleteTodo = (data) => {
+    deleteDocoment("todos", data);
   };
 
   const handleupdate = (data) => {
@@ -211,7 +212,7 @@ const Todo = () => {
                       <MdEdit className="h-6 w-6" />{" "}
                     </span>
                     <span
-                      onClick={() => handleDeleteTodo(item.id)}
+                      onClick={() => handleDeleteTodo(item)}
                       className="bg-red-400 text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1"
                     >
                       {" "}
@@ -239,11 +240,18 @@ const Todo = () => {
                   {item.photo && (
                     <div className="relative w-full md:w-3/12  p-2">
                       <MdClose className="absolute right-3 md:right-1 top-3 bg-red-500 hover:scale-105 duration-500 text-white h-6 w-6 rounded-md cursor-pointer " />
-                      <img
+                      <LazyLoadImage
+                        src={item.photo}
+                        width={600}
+                        height={400}
+                        className="w-full max-h-44 object-cover md:ml-2   rounded-md border-slate-200 border-2"
+                        alt="Image Alt"
+                      />
+                      {/* <img
                         src={item.photo}
                         alt=""
                         className="w-full md:ml-2   rounded-md border-slate-200 border-2"
-                      />{" "}
+                      />{" "} */}
                     </div>
                   )}
                 </div>
