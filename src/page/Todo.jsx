@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Reorder } from "framer-motion";
 import clickSoundStatusOk from "../../public/Sounds/statusok.mp3";
+import clickSoundStatusNotOk from "../../public/Sounds/status!ok.mp3";
 import ConfettiExplosion from "react-confetti-explosion";
 
 import {
@@ -31,6 +32,7 @@ import { serverTimestamp } from "firebase/firestore";
 
 const Todo = () => {
   const [statusok] = useState(new Audio(clickSoundStatusOk));
+  const [statusNotok] = useState(new Audio(clickSoundStatusNotOk));
   const [isExploding, setIsExploding] = useState([false, null]);
 
   const [input, setinput] = useState({
@@ -85,7 +87,7 @@ const Todo = () => {
   };
 
   const handleupdate = (data) => {
-    statusok.play();
+    data.status ? statusNotok.play() : statusok.play();
 
     data.status
       ? setIsExploding([false, null])
