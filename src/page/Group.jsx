@@ -14,7 +14,7 @@ const Group = () => {
             <title>Community</title>
             <link rel="canonical" href="http://mysite.com/example" />
           </Helmet>
-          <div className="h-screen w-full bg-indigo-300">
+          <div className="h-screen w-full bg-indigo-300 p-2 md:p-5">
             <p className="  h-10 bg-white m-4  text-2xl text-center font-semibold rounded-md">
               Communitys
             </p>
@@ -41,11 +41,7 @@ const Group = () => {
                       alt="users"
                       className="w-8 h-8 rounded-full border"
                     />
-                    <img
-                      src={avatar}
-                      alt="users"
-                      className="w-8 h-8 rounded-full border"
-                    />
+              
                   </div>
                 </div>
               </div>
@@ -71,11 +67,7 @@ const Group = () => {
                       alt="users"
                       className="w-8 h-8 rounded-full border"
                     />
-                    <img
-                      src={avatar}
-                      alt="users"
-                      className="w-8 h-8 rounded-full border"
-                    />
+          
                   </div>
                 </div>
               </div>

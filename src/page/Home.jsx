@@ -10,7 +10,7 @@ const Home = () => {
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
       <div className="bg-indigo-400 w-full h-screen flex flex-col gap-3 items-center justify-center  ">
-        <img src={homelogo} className="rounded-md" alt="home page" />
+        <img src={homelogo} className="rounded-md  px-5" alt="home page" />
         <p className="font-semibold text-white text-2xl">Welcome to app</p>
       </div>
     </>

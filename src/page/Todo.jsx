@@ -1,95 +1,126 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Reorder } from "framer-motion";
+import clickSoundStatusOk from "../../public/Sounds/statusok.mp3";
+import ConfettiExplosion from "react-confetti-explosion";
+
 import {
+  MdClose,
   MdCloudDone,
+  MdDelete,
   MdEdit,
   MdOutlineAddPhotoAlternate,
 } from "react-icons/md";
-import { BiLoaderCircle, BiSolidTrashAlt } from "react-icons/bi";
+import {
+  BiLoaderCircle,
+  BiSolidSelectMultiple,
+  BiSolidTrashAlt,
+} from "react-icons/bi";
 import Modal from "../components/modal/Modal";
 import avatar from "../assets/avatar.jpg";
 import { Helmet } from "react-helmet";
-import { GetDate, GetTimeAndDate, addDocoment, deleteDocoment, getAllData, getRealtimeData, updateDocoment } from "../firebase/services/AllService";
+import {
+  GetDate,
+  GetTimeAndDate,
+  addDocoment,
+  deleteDocoment,
+  getAllData,
+  getRealtimeData,
+  updateDocoment,
+} from "../firebase/services/AllService";
 import { serverTimestamp } from "firebase/firestore";
-  
- 
+
 const Todo = () => {
-  const [input ,setinput]=useState({email:'anis@gmail.com',photo:"anis.png",text:"",trash:false,time:serverTimestamp(),status:false})
+  const [statusok] = useState(new Audio(clickSoundStatusOk));
+  const [isExploding, setIsExploding] = useState([false, null]);
+
+  const [input, setinput] = useState({
+    email: "anis@gmail.com",
+    photo: "",
+    text: "",
+    trash: false,
+    time: serverTimestamp(),
+    status: false,
+  });
   const [modal, setmodal] = useState(false);
-  const [AllTodo,setAllTodo]=useState(null)
- 
+  const [AllTodo, setAllTodo] = useState(null);
 
+  const handleInput = (e) => {
+    setinput((prevstate) => ({
+      ...prevstate,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
- 
+  const handleAddTodo = () => {
+    addDocoment("todos", input);
+    setmodal(false);
+    setinput({
+      email: "anis@gmail.com",
+      photo: "",
+      text: "",
+      trash: false,
+      time: serverTimestamp(),
+      status: false,
+    });
+  };
 
- const handleInput=(e)=>{
-  setinput((prevstate)=>({
-    ...prevstate,
-    [e.target.name]:e.target.value
-  }))
+  const getTodo = async () => {
+    const data = await getAllData("todos");
+    setAllTodo(data);
+  };
 
- }
+  const handleRealtimeData = () => {
+    getRealtimeData("todos", setAllTodo);
+  };
 
- const handleAddTodo=()=>{
-  addDocoment('todos',input)
-  setmodal(false)
-  setinput({email:'anis@gmail.com',photo:"anis.png",text:"",trash:false,time:serverTimestamp(),status:false})
- }
+  useEffect(() => {
+    handleRealtimeData();
+    // getTodo()
+  }, []);
 
+  // console.log(AllTodo[0].time.seconds);
+  const handleDeleteTodo = (id) => {
+    console.log(id);
+    deleteDocoment("todos", id);
+  };
 
- const getTodo=async()=>{
-    const data= await getAllData('todos')
-   setAllTodo(data) 
- }
+  const handleupdate = (data) => {
+    statusok.play();
 
-const handleRealtimeData=()=>{
-  getRealtimeData('todos',setAllTodo)
- 
-  
-}
-
-useEffect(() => {
-handleRealtimeData()
-// getTodo()
-
-}, [])
- 
-
-// console.log(AllTodo[0].time.seconds);
-const handleDeleteTodo=(id)=>{
-  console.log(id);
-deleteDocoment('todos',id)
-}
-
- 
-const handleupdate=(data)=>{
-  updateDocoment('todos',{...data,status:!data.status})
-}
+    data.status
+      ? setIsExploding([false, null])
+      : setIsExploding([true, data.id]);
+    console.log(isExploding);
+    updateDocoment("todos", { ...data, status: !data.status });
+  };
   return (
     <div className="w-full ">
-      
       <Helmet>
         <meta charSet="utf-8" />
-        <title>All todos</title>
+        <title>All todos a</title>
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
       <Modal status={modal} setstatus={setmodal}>
         <p className="text-xl font-semibold  mb-3">Text :</p>
 
         <textarea
-        onChange={handleInput}
-          name='text' 
+          onChange={handleInput}
+          name="text"
           value={input.text}
           id=""
           cols="30"
-          className=" bg-slate-100 p-2 border focus:outline-none mb-5 rounded-md  w-10/12"
+          className=" bg-slate-100 p-2 border focus:outline-none mb-5 rounded-md  md:w-10/12"
           rows="2"
         ></textarea>
 
         <label htmlFor="photo">
           <input type="file" name="" id="photo" className="hidden " />
-          <MdOutlineAddPhotoAlternate className="w-64 h-64 border-4 border-black rounded-md  cursor-pointer" />
+          <MdOutlineAddPhotoAlternate className=" w-64   h-44 md:h-64 border-4 border-black rounded-md  cursor-pointer" />
         </label>
-        <button onClick={handleAddTodo} className="bg-blue-400  w-64 text-white py-1 text-lg rounded-md mt-3">
+        <button
+          onClick={handleAddTodo}
+          className="bg-blue-400  w-64 text-white py-1 text-lg rounded-md mt-3"
+        >
           Save
         </button>
       </Modal>
@@ -98,86 +129,109 @@ const handleupdate=(data)=>{
 
       <div className=" m-4 space-y-2 overflow-hidden pb-10 sm:pb-0">
         <button
+          // onClick={() => setmodal(!modal)}
           onClick={() => setmodal(!modal)}
           className="py-1 bg-indigo-400 text-white px-5 rounded-md cursor-pointer font-semibold"
         >
           Add {}
         </button>
- 
-     {!AllTodo&& <h3 className="p-3 bg-slate-200 animate-pulse flex  rounded-md gap-4">  <span className="bg-slate-400   p-2 text-white font-semibold md:text-xl rounded-md animate-pulse w-7/12"> Loading . . . . .</span> <span className="bg-slate-400  w-5/12 rounded-md p-2"></span> </h3>}
-     {!AllTodo&& <h3 className="p-3 bg-slate-200 animate-pulse flex  rounded-md gap-4">  <span className="bg-slate-400   p-2 text-white font-semibold md:text-xl rounded-md animate-pulse w-3/12"></span> <span className="bg-slate-400  w-9/12 rounded-md p-2"></span> </h3>}
-        {/* single todo  */}
-{AllTodo?.reverse().map((item ,key)=>{
-  return (
-         <div key={key} className=" flex gap-2 items-start  bg-indigo-400 p-2 font-semibold text-lg      rounded-md px-4">
-          <span className="text-white">{item.text} <br />
-          <p className="text-sm bg-slate-200 text-black px-1 rounded-md mt-2 w-[140px] text-center ">{ GetDate(item?.time?.seconds)}</p>
-           </span>
-        
-           <div className=" ms-auto" onClick={()=>handleupdate(item)}>
+        {/* loading start      */}
+        {!AllTodo && (
+          <h3 className="p-3 bg-slate-200 animate-pulse flex  rounded-md gap-4">
+            {" "}
+            <span className="bg-slate-400   p-2 text-white font-semibold md:text-xl rounded-md animate-pulse w-7/12">
+              {" "}
+              Loading . . . . .
+            </span>{" "}
+            <span className="bg-slate-400  w-5/12 rounded-md p-2"></span>{" "}
+          </h3>
+        )}
+        {!AllTodo && (
+          <h3 className="p-3 bg-slate-200 animate-pulse flex  rounded-md gap-4">
+            {" "}
+            <span className="bg-slate-400   p-2 text-white font-semibold md:text-xl rounded-md animate-pulse w-3/12"></span>{" "}
+            <span className="bg-slate-400  w-9/12 rounded-md p-2"></span>{" "}
+          </h3>
+        )}
+        {/* loading end      */}
+        {/* <Reorder.Group
+          axis="y"
+          values={AllTodo ? AllTodo : []}
+          onReorder={setAllTodo}
+        ><Reorder.Item key={item} value={item}> 
+       </Reorder.Item>    </Reorder.Group> */}
+        {AllTodo?.map((item) => {
+          return (
+            <>
+              <div key={item.id} className="bg-slate-300 p-3 rounded-md ">
+                <div className="bg-white p-2 rounded-md ">
+                  <div className="float-right w-4/12  sm:w-3/12 p-1 pr-0   md:pr-10 lg:pr-0 flex justify-center gap-1 md:gap-3">
+                    {isExploding[0] == true && isExploding[1] == item.id && (
+                      <ConfettiExplosion />
+                    )}
+                    <span
+                      onClick={() => handleupdate(item)}
+                      className={` ${
+                        item.status ? "bg-green-400" : "bg-yellow-400"
+                      }    text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1`}
+                    >
+                      {" "}
+                      <span className="hidden md:block">
+                        {item.status ? "completed" : "complete"}
+                      </span>{" "}
+                      {item.status ? (
+                        <BiSolidSelectMultiple />
+                      ) : (
+                        <BiLoaderCircle />
+                      )}
+                    </span>
+                    <span className="bg-blue-400 text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1">
+                      {" "}
+                      <span className="hidden md:block">
+                        edit
+                      </span> <MdEdit />{" "}
+                    </span>
+                    <span
+                      onClick={() => handleDeleteTodo(item.id)}
+                      className="bg-red-400 text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1"
+                    >
+                      {" "}
+                      <span className="hidden md:block">delete</span>{" "}
+                      <MdDelete />{" "}
+                    </span>
+                  </div>
 
-        {item.status  ?   <span className="   bg-green-400 text-white p-2 rounded-md text-sm  cursor-pointer">
-        complete
-          </span>:   <span className="    bg-yellow-400 text-black p-2 rounded-md text-sm  cursor-pointer">
-        pending
-          </span>
-        }
-     
-        </div>
-  
-       
-          
-          <span className="flex items-center gap-2 bg-white text-indigo-400 px-2 rounded-md py-2 text-sm cursor-pointer">
-          <span className="hidden md:block">edit</span> <MdEdit />
-          </span>
-           
-          <span onClick={()=>handleDeleteTodo(item.id)} className="  flex items-center gap-2 bg-red-400 border text-white px-2 rounded-md py-2 text-sm cursor-pointer">
-           <span className="hidden md:block">delete</span>  <BiSolidTrashAlt />
-          </span>
-          {/* <span className="ml-4 "> */}
-            {/* <BiLoaderCircle className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
-            {/* <MdCloudDone className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
-            {/* <BiSolidTrash className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
-          {/* </span> */}
-        </div>
-  )
-})}
-   
+                  <div className=" font-semibold text-slate-700 p-2  ">
+                    <p
+                      className={`${
+                        item.time
+                          ? "bg-transparent  w-5/12 md:w-2/12"
+                          : "bg-gray-200 w-5/12 md:w-2/12 px-2 rounded-md"
+                      }`}
+                    >
+                      {item.time
+                        ? GetDate(item?.time?.seconds)
+                        : "loading . ..  . ."}
+                    </p>
+                    <hr className=" w-5/12  md:w-2/12" />
+                    <p className="">{item.text}</p>
+                  </div>
 
-        {/* single todo  */}
-
-  <div className="pt-64"></div>
-   <hr />
-   <hr />
-
-
-    {/* single todo  */}
-
-        <div className=" flex gap-2 items-start  bg-indigo-400 p-2 font-semibold text-lg       rounded-md px-4">
-          <span className="text-white">
-            go to bazar Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Reprehenderit dolores eaque dolore eveniet minima est. Eum error
-            sapiente ab facere?{" "}
-            <img src={avatar} alt="" className="w-32 rounded-md" />{" "}
-          </span>
-          <span className=" ml-auto bg-white text-blue-400 p-2 rounded-md text-sm ms-5 cursor-pointer">
-            added
-          </span>
-
-          <span className="flex items-center gap-2 bg-white text-indigo-400 px-2 rounded-md py-2 cursor-pointer text-sm ">
-            edit <MdEdit />
-          </span>
-          <span className=" flex items-center gap-2 bg-red-400 border text-white px-2 rounded-md py-2 text-sm cursor-pointer">
-            delete <BiSolidTrashAlt />
-          </span>
-          <span className="ml-4 ">
-            <BiLoaderCircle className="w-8 h-6 bg-white rounded-md cursor-pointer " />
-            {/* <MdCloudDone className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
-            {/* <BiSolidTrash className="w-8 h-6 bg-white rounded-md cursor-pointer " /> */}
-          </span>
-        </div>
-
-        {/* single todo  */}
+                  {item.photo && (
+                    <div className="relative w-full md:w-3/12  p-2">
+                      <MdClose className="absolute right-3 md:right-1 top-3 bg-red-500 hover:scale-105 duration-500 text-white h-6 w-6 rounded-md cursor-pointer " />
+                      <img
+                        src={avatar}
+                        alt=""
+                        className="w-full md:ml-2   rounded-md border-slate-200 border-2"
+                      />{" "}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          );
+        })}{" "}
       </div>
     </div>
   );

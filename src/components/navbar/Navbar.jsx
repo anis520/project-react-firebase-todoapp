@@ -12,9 +12,9 @@ import avatarlogo from "../../assets/avatar.jpg";
 import "./index.css";
 import { MdAccountCircle, MdHome, MdQuestionAnswer } from "react-icons/md";
 import { Link } from "react-router-dom";
-const Navbar = () => {
+const Navbar = ({nav,setnav}) => {
   const location = useLocation();
-  const [nav, setnav] = useState(true);
+ 
   return (
     <>
       {/* destop navbar  */}
@@ -22,7 +22,7 @@ const Navbar = () => {
       <div
         className={`hidden sm:block ${
           nav ? "w-[100px] " : "  sm:w-4/12  md:w-2/12"
-        } h-screen bg-slate-200 relative   duration-300 prevent-select `}
+        }  h-screen   bg-slate-200 fixed top-0 left-0 z-20   duration-300 prevent-select `}
       >
         <BsList
           onClick={() => setnav(!nav)}
@@ -147,7 +147,7 @@ const Navbar = () => {
       {/* destop navbar  */}
 
       {/* moble navbar */}
-      <div className="sm:hidden   fixed bottom-0 left-0 w-full p-3 bg-indigo-400 rounded-t-3xl ring-2 ring-indigo-400 ring-offset-2 ">
+      <div className="sm:hidden z-20   fixed bottom-0 left-0 w-full p-3 bg-indigo-400 rounded-t-3xl ring-2 ring-indigo-400 ring-offset-2 ">
         <div className="flex gap-3 justify-between px-5">
           <Link to={"/"}>
             <MdHome

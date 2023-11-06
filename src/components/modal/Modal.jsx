@@ -3,11 +3,11 @@ import React from "react";
 const Modal = ({ children, status, setstatus }) => {
   return (
     <div
-      className={`fixed top-0 left-0 ${
+      className={`fixed top-0 left-0 z-20   ${
         !status && "opacity-0 hidden duration-700"
       } w-screen h-screen bg-gray-400 bg-opacity-60 flex items-center justify-center `}
     >
-      <div className="bg-white w-6/12   p-4 rounded-md z-30 relative">
+      <div className="bg-white md:w-6/12   p-4 rounded-md z-30 relative">
         {children}{" "}
         <p
           onClick={() => setstatus(false)}
