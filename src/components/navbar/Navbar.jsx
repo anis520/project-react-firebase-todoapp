@@ -4,14 +4,13 @@ import {
   AiFillSetting,
   AiOutlineAppstoreAdd,
 } from "react-icons/ai";
-import { redirect, useLocation } from "react-router-dom";
+import { redirect, useLocation, Link } from "react-router-dom";
 import { BsCardChecklist, BsFillTrashFill, BsList } from "react-icons/bs";
 import { TbBuildingCommunity } from "react-icons/tb";
 import { FaArrowsSpin } from "react-icons/fa6";
 import avatarlogo from "../../assets/avatar.jpg";
 import "./index.css";
 import { MdAccountCircle, MdHome, MdQuestionAnswer } from "react-icons/md";
-import { Link } from "react-router-dom";
 import { singout } from "../../firebase/services/AllService";
 import { useDispatch } from "react-redux";
 import { setlogout } from "../../features/Auth/authSlice";
@@ -64,7 +63,7 @@ const Navbar = ({ nav, setnav }) => {
           </div>
           <div className={`mt-4 ${nav ? "space-x-0 space-y-2" : "space-x-2"}`}>
             <button className="bg-indigo-400 text-white font-semibold px-3 rounded-md ">
-              Edit
+              <Link to={"/account"}>Edit</Link>
             </button>
             <button
               onClick={handlesingout}
@@ -184,7 +183,13 @@ const Navbar = ({ nav, setnav }) => {
           </Link>
 
           <AiFillSetting className="h-12 w-12 bg-white rounded-md p-1" />
-          <MdAccountCircle className="h-12 w-12 bg-white rounded-md p-1" />
+          <Link to={"/account"}>
+            <MdAccountCircle
+              className={`h-12 w-12 bg-white rounded-md p-1  ${
+                location.pathname == "/account" && " scale-125"
+              }`}
+            />
+          </Link>
         </div>
       </div>
       {/* moble navbar */}

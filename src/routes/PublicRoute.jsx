@@ -7,6 +7,7 @@ const publicRouter = [
   {
     element: <PublicGard />,
     children: [
+      { path: "*", element: <Login /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
     ],
