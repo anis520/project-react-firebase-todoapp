@@ -7,16 +7,16 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { useState } from "react";
 import router from "./routes/Route";
+import { useDispatch } from "react-redux";
+import { setlogin, setlogout } from "./features/Auth/authSlice";
 function App() {
+  const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user.email);
-        localStorage.setItem("user", user.email);
-        redirect("/");
+        dispatch(setlogin(user.email));
       } else {
-        localStorage.removeItem("user");
-        redirect("/login");
+        dispatch(setlogout());
       }
     });
   }, []);

@@ -59,12 +59,12 @@ export const getRealtimeData = (collectionName, stateName) => {
 };
 
 // get queryed data
-export const getQueryData = (collectionName, stateName, queryfor) => {
+export const getQueryData = (collectionName, stateName, queryfor, email) => {
   onSnapshot(
     query(
       collection(db, collectionName),
-      orderBy(queryfor)
-      // where("status", "==", true)
+      where("email", "==", email)
+      // orderBy(queryfor)
     ),
     (snapshot) => {
       const datalist = [];

@@ -3,8 +3,11 @@ import { AiOutlineLogin } from "react-icons/ai";
 import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setlogout } from "../features/Auth/authSlice";
 const Register = () => {
   const [input, setinput] = useState({ email: "", password: "", name: "" });
+  const dispatch = useDispatch();
 
   const handleInput = (e) => {
     setinput((prevstate) => ({
@@ -15,6 +18,8 @@ const Register = () => {
   const handleRegister = async () => {
     setinput({ email: "", password: "" });
     await createUserWithEmailAndPassword(auth, input.email, input.password);
+    dispatch(setlogout());
+    signOut(auth);
   };
 
   return (
@@ -28,7 +33,7 @@ const Register = () => {
         </p>{" "}
         <hr className="w-full h-2 bg-indigo-400 rounded-md" />
         <div className="space-y-3 py-3">
-          <label className="font-semibold text-slate-500" htmlFor="name">
+          {/* <label className="font-semibold text-slate-500" htmlFor="name">
             Enter name :
           </label>
           <input
@@ -38,7 +43,7 @@ const Register = () => {
             type="name"
             name="name"
             id="name"
-          />
+          /> */}
           <label className="font-semibold text-slate-500" htmlFor="email">
             Enter email :
           </label>

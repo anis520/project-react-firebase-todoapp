@@ -27,15 +27,16 @@ import {
 import { serverTimestamp } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase";
+import { useSelector } from "react-redux";
 
 const Todo = () => {
   const [statusok] = useState(new Audio(clickSoundStatusOk));
   const [statusNotok] = useState(new Audio(clickSoundStatusNotOk));
   const [isExploding, setIsExploding] = useState([false, null]);
-  // const [photo, setPhoto] = useState(null);
 
+  const { user } = useSelector((state) => state.auth);
   const [input, setinput] = useState({
-    email: localStorage.getItem("user"),
+    email: user.email,
     photo: null,
     text: "",
     trash: false,
@@ -43,7 +44,6 @@ const Todo = () => {
     status: false,
   });
 
-  console.log(input);
   const [modal, setmodal] = useState(false);
   const [AllTodo, setAllTodo] = useState(null);
 
@@ -70,7 +70,7 @@ const Todo = () => {
     }
 
     setinput({
-      email: localStorage.getItem("user"),
+      email: user.email,
       photo: null,
       text: "",
       trash: false,
@@ -81,7 +81,7 @@ const Todo = () => {
 
   const handleRealtimeData = () => {
     // getRealtimeData("todos", setAllTodo);
-    getQueryData("todos", setAllTodo, "status");
+    getQueryData("todos", setAllTodo, "status", user.email);
   };
 
   useEffect(() => {
@@ -184,7 +184,7 @@ const Todo = () => {
                 } `}
               >
                 <div className="bg-white p-2 rounded-md ">
-                  <div className="float-right w-4/12   sm:w-3/12 p-1 pr-0   md:pr-10 lg:pr-0 flex justify-between md:justify-center  gap-1  md:gap-3">
+                  <div className="float-right w-4/12   sm:w-3/12 p-1 pr-0   md:pr-10 lg:pr-0 flex justify-around md:justify-center  gap-1  md:gap-3">
                     {isExploding[0] == true && isExploding[1] == item.id && (
                       <ConfettiExplosion />
                     )}
@@ -206,11 +206,11 @@ const Todo = () => {
                         )}
                       </span>
                     </span>
-                    <span className="bg-blue-400 text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1">
+                    {/* <span className="bg-blue-400 text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1">
                       {" "}
                       <span className="hidden md:block">edit</span>{" "}
                       <MdEdit className="h-6 w-6" />{" "}
-                    </span>
+                    </span> */}
                     <span
                       onClick={() => handleDeleteTodo(item)}
                       className="bg-red-400 text-white font-semibold rounded-md p-1 text-sm cursor-pointer flex items-center gap-1"

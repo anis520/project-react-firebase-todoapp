@@ -3,10 +3,10 @@ import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const PrivateGard = () => {
-  const [user, setuser] = useState(localStorage.getItem("user"));
-  console.log(user);
+  const { user } = useSelector((state) => state.auth);
 
   return user ? <Outlet /> : <Navigate to={"/login"} />;
   //   return <Outlet />;

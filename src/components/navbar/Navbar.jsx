@@ -13,10 +13,15 @@ import "./index.css";
 import { MdAccountCircle, MdHome, MdQuestionAnswer } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { singout } from "../../firebase/services/AllService";
+import { useDispatch } from "react-redux";
+import { setlogout } from "../../features/Auth/authSlice";
+
 const Navbar = ({ nav, setnav }) => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const handlesingout = () => {
     singout();
+    dispatch(setlogout());
   };
   return (
     <>
