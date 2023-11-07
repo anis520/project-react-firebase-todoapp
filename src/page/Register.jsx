@@ -5,6 +5,8 @@ import { auth } from "../firebase";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setlogout } from "../features/Auth/authSlice";
+import toast from "react-hot-toast";
+
 const Register = () => {
   const [input, setinput] = useState({ email: "", password: "", name: "" });
   const dispatch = useDispatch();
@@ -16,10 +18,16 @@ const Register = () => {
     }));
   };
   const handleRegister = async () => {
-    setinput({ email: "", password: "" });
-    await createUserWithEmailAndPassword(auth, input.email, input.password);
-    dispatch(setlogout());
-    signOut(auth);
+    try {
+      setinput({ email: "", password: "" });
+      await createUserWithEmailAndPassword(auth, input.email, input.password);
+      dispatch(setlogout());
+      signOut(auth);
+
+      toast("register successful");
+    } catch (error) {
+      toast.error("some going wrong");
+    }
   };
 
   return (

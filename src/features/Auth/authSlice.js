@@ -23,6 +23,7 @@ const authSlice = createSlice({
     setMessageEmpty: (state) => {
       (state.message = null), (state.error = null);
     },
+
     setlogout: (state) => {
       localStorage.removeItem("user");
       state.user = null;

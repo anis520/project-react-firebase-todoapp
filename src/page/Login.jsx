@@ -3,6 +3,8 @@ import { AiOutlineLogin } from "react-icons/ai";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { Link, redirect } from "react-router-dom";
+import toast from "react-hot-toast";
+
 const Login = () => {
   const [input, setinput] = useState({ email: "", password: "" });
 
@@ -13,8 +15,13 @@ const Login = () => {
     }));
   };
   const handleRegister = async () => {
-    setinput({ email: "", password: "", name: "" });
-    await signInWithEmailAndPassword(auth, input.email, input.password);
+    try {
+      setinput({ email: "", password: "", name: "" });
+      await signInWithEmailAndPassword(auth, input.email, input.password);
+      toast("login successfull");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   // const handleLogout = () => {
   //   signOut(auth);

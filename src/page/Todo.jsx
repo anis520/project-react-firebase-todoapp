@@ -221,9 +221,9 @@ const Todo = () => {
                     </span>
                   </div>
 
-                  <div className=" font-semibold text-slate-700 p-2  ">
+                  <div className=" md:font-semibold text-slate-700 p-2  ">
                     <p
-                      className={`${
+                      className={`text-xs ${
                         item.time
                           ? "bg-transparent  w-5/12 md:w-2/12"
                           : "bg-gray-200 w-5/12 md:w-2/12 px-2 rounded-md"
