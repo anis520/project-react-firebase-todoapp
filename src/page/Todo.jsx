@@ -86,6 +86,7 @@ const Todo = () => {
 
   useEffect(() => {
     handleRealtimeData();
+    setIsExploding([false, null]);
   }, []);
 
   const handleDeleteTodo = (data) => {

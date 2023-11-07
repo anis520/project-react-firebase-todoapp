@@ -2,10 +2,11 @@ import React from "react";
 import { singout } from "../firebase/services/AllService";
 import { setlogout } from "../features/Auth/authSlice";
 import { useDispatch } from "react-redux";
-
+import toast from "react-hot-toast";
 const Account = () => {
   const dispatch = useDispatch();
   const handlesingout = () => {
+    toast("logout successfull");
     singout();
     dispatch(setlogout());
   };
