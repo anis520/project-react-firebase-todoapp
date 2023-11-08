@@ -102,6 +102,7 @@ const Todo = () => {
 
     updateDocoment("todos", { ...data, status: !data.status });
   };
+
   return (
     <div className="w-full ">
       <Helmet>
@@ -130,7 +131,16 @@ const Todo = () => {
             className="hidden"
             onChange={(e) => setinput({ ...input, photo: e.target.files[0] })}
           />
-          <MdOutlineAddPhotoAlternate className=" w-64   h-44 md:h-64 border-4 border-black rounded-md  cursor-pointer" />
+
+          {input.photo ? (
+            <img
+              className="w-full h-28 object-cover rounded-md md:h-48"
+              src={input.photo && URL.createObjectURL(input.photo)}
+              alt=""
+            />
+          ) : (
+            <MdOutlineAddPhotoAlternate className=" w-64   h-44 md:h-64 border-4 border-black rounded-md  cursor-pointer" />
+          )}
         </label>
         <button
           onClick={handleAddTodo}
