@@ -11,6 +11,7 @@ import {
 //create auth slice
 const authSlice = createSlice({
   name: "auth",
+
   initialState: {
     user: localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user"))
@@ -18,6 +19,9 @@ const authSlice = createSlice({
     message: null,
     error: null,
     loading: false,
+    mode: localStorage.getItem("mode")
+      ? JSON.parse(localStorage.getItem("mode"))
+      : "light",
   },
   reducers: {
     setMessageEmpty: (state) => {
@@ -31,6 +35,13 @@ const authSlice = createSlice({
     setlogin: (state, action) => {
       localStorage.setItem("user", JSON.stringify({ email: action.payload }));
       state.user = { email: action.payload };
+    },
+    setDarkMode: (state, action) => {
+      localStorage.setItem(
+        "mode",
+        state.mode == "dark" ? JSON.stringify("light") : JSON.stringify("dark")
+      );
+      state.mode = state.mode == "dark" ? "light" : "dark";
     },
   },
   extraReducers: (builder) => {
@@ -115,6 +126,7 @@ const authSlice = createSlice({
 // selectors
 export const getUserData = (state) => state.auth;
 // action
-export const { setMessageEmpty, setlogout, setlogin } = authSlice.actions;
+export const { setMessageEmpty, setlogout, setlogin, setDarkMode } =
+  authSlice.actions;
 // slice
 export default authSlice.reducer;

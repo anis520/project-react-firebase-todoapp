@@ -12,10 +12,12 @@ import avatarlogo from "../../assets/avatar.jpg";
 import "./index.css";
 import { MdAccountCircle, MdHome, MdQuestionAnswer } from "react-icons/md";
 import { singout } from "../../firebase/services/AllService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setlogout } from "../../features/Auth/authSlice";
 
 const Navbar = ({ nav, setnav }) => {
+  const { user } = useSelector((state) => state.auth);
+
   const location = useLocation();
   const dispatch = useDispatch();
   const handlesingout = () => {
@@ -49,10 +51,10 @@ const Navbar = ({ nav, setnav }) => {
             <div
               className={`bg-indigo-400 p-4 rounded-md text-white font-semibold  shadow-md  ${
                 nav && "hidden"
-              }`}
+              } overflow-hidden`}
             >
-              <p>Anis Ahad</p>
-              <p>ahishad@gmail.com</p>
+              <p>user</p>
+              <p>{user.email}</p>
               {/* <p>
               Account type :{" "}
               <span className="bg-white text-indigo-400 px-2 rounded-md cursor-pointer ">
@@ -130,15 +132,21 @@ const Navbar = ({ nav, setnav }) => {
               <TbBuildingCommunity className={`${nav && "text-2xl"}`} />
             </Link>{" "}
           </li>{" "}
-          <li
-            className={`flex items-center  ${
-              nav ? "justify-center" : "justify-between"
-            } gap-3 hover:bg-indigo-400   cursor-pointer transition  p-1 px-2 bg-gray-200 hover:text-white rounded-md font-semibold`}
-          >
+          <li>
             {" "}
-            {!nav && "Setting"}{" "}
-            <AiFillSetting className={`${nav && "text-2xl"}`} />
-          </li>
+            <Link
+              to={"/setting"}
+              className={`flex items-center  ${
+                nav ? "justify-center" : "justify-between"
+              } ${
+                location.pathname == "/setting" && "bg-indigo-400 text-white"
+              } gap-3 hover:bg-indigo-400   cursor-pointer transition  p-1 px-2 bg-gray-200 hover:text-white rounded-md font-semibold`}
+            >
+              {" "}
+              {!nav && "Setting"}{" "}
+              <AiFillSetting className={`${nav && "text-2xl"}`} />
+            </Link>{" "}
+          </li>{" "}
           <li
             className={`flex items-center  ${
               nav ? "justify-center" : "justify-between"
@@ -181,8 +189,14 @@ const Navbar = ({ nav, setnav }) => {
               } `}
             />
           </Link>
+          <Link to={"/setting"}>
+            <AiFillSetting
+              className={`duration-300 h-12 w-12 bg-white rounded-md p-1   ${
+                location.pathname == "/setting" && " scale-125"
+              } `}
+            />
+          </Link>
 
-          <AiFillSetting className="h-12 w-12 bg-white rounded-md p-1" />
           <Link to={"/account"}>
             <MdAccountCircle
               className={`duration-300 h-12 w-12 bg-white rounded-md p-1  ${

@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { AiOutlineLogin } from "react-icons/ai";
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { FcGoogle } from "react-icons/fc";
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  signInWithPopup,
+} from "firebase/auth";
+import { auth, googleProvider } from "../firebase";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setlogout } from "../features/Auth/authSlice";
@@ -28,6 +33,10 @@ const Register = () => {
     } catch (error) {
       toast.error("some going wrong");
     }
+  };
+
+  const handlegoogleLogin = async () => {
+    await signInWithPopup(auth, googleProvider);
   };
 
   return (
@@ -84,6 +93,13 @@ const Register = () => {
           <p className="cursor-pointer text-indigo-700 font-semibold text-center">
             <Link to="/login">Have an account ?</Link>
           </p>
+
+          <button
+            className="font-semibold flex items-center justify-center gap-4 border p-1 rounded-md w-8/12 mx-auto"
+            onClick={handlegoogleLogin}
+          >
+            <FcGoogle /> Sign in with google
+          </button>
         </div>
       </div>
     </div>

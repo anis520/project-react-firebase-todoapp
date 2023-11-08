@@ -4,6 +4,7 @@ import Home from "../page/Home";
 import Todo from "../page/Todo";
 import Group from "../page/Group";
 import Account from "../page/Account";
+import Setting from "../page/Setting";
 
 const privateRouter = [
   {
@@ -17,6 +18,7 @@ const privateRouter = [
           { path: "/todo", element: <Todo /> },
           { path: "/community", element: <Group /> },
           { path: "/account", element: <Account /> },
+          { path: "/setting", element: <Setting /> },
         ],
       },
     ],

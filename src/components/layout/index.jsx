@@ -9,13 +9,17 @@ const Layout = () => {
   const [nav, setnav] = useState(true);
 
   return (
-    <div className="flex">
-     
-
+    <div className="flex dark:bg-slate-800 h-screen">
       <Navbar nav={nav} setnav={setnav} />
-  
 
-      <div className={`${nav?"sm:ml-28":'sm:ml-56 md:ml-40 lg:ml-60 '} w-full duration-300`}> <Outlet />    </div>
+      <div
+        className={`${
+          nav ? "sm:ml-28" : "sm:ml-56 md:ml-40 lg:ml-60 "
+        } w-full duration-300`}
+      >
+        {" "}
+        <Outlet />{" "}
+      </div>
     </div>
   );
 };

@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { AiOutlineLogin } from "react-icons/ai";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import { auth, googleProvider } from "../firebase";
 import { Link, redirect } from "react-router-dom";
 import toast from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [input, setinput] = useState({ email: "", password: "" });
@@ -23,9 +28,11 @@ const Login = () => {
       toast.error(error.message);
     }
   };
-  // const handleLogout = () => {
-  //   signOut(auth);
-  // };
+
+  const handlegoogleLogin = async () => {
+    await signInWithPopup(auth, googleProvider);
+  };
+
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-indigo-200">
       <div className="bg-white p-5   w-10/12 sm:w-7/12 md:w-4/12   rounded-xl shadow-lg hover:scale-105 duration-300 ">
@@ -69,6 +76,12 @@ const Login = () => {
           <p className="cursor-pointer text-indigo-700 font-semibold text-center">
             <Link to="/register">Create an account ?</Link>
           </p>
+          <button
+            className="font-semibold flex items-center justify-center gap-4 border p-1 rounded-md w-8/12 mx-auto"
+            onClick={handlegoogleLogin}
+          >
+            <FcGoogle /> Sign in with google
+          </button>
         </div>
       </div>
     </div>

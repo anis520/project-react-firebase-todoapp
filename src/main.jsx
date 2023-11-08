@@ -7,10 +7,10 @@ import store from "./app/store.js";
 import { Toaster } from "react-hot-toast";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <>
+  <div>
     <Provider store={store}>
       <Toaster />
       <App />
     </Provider>{" "}
-  </>
+  </div>
 );

@@ -7,9 +7,11 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { useState } from "react";
 import router from "./routes/Route";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setlogin, setlogout } from "./features/Auth/authSlice";
 function App() {
+  const { mode } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -22,9 +24,9 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className={`${mode}  `}>
       <RouterProvider router={router}></RouterProvider>;
-    </>
+    </div>
   );
 }
 

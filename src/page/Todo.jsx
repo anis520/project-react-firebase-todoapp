@@ -106,7 +106,7 @@ const Todo = () => {
     <div className="w-full ">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>All todos a</title>
+        <title>All todos </title>
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
       <Modal status={modal} setstatus={setmodal}>
@@ -139,7 +139,7 @@ const Todo = () => {
           Save
         </button>
       </Modal>
-      <p className="font-semibold text-2xl p-5">All todos</p>
+      <p className="font-semibold text-2xl p-5 dark:text-white">All todos</p>
       <hr className="" />
 
       <div className=" m-4 space-y-2 overflow-hidden pb-10 sm:pb-0">

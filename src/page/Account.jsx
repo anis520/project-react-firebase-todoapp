@@ -13,7 +13,7 @@ const Account = () => {
 
   return (
     <div className="p-5">
-      Account
+      <p className="font-semibold text-xl dark:text-white">Account</p>
       <button
         className="block my-5 w-fit p-2 text-white bg-red-400 font-semibold  rounded-md"
         onClick={handlesingout}
