@@ -161,7 +161,7 @@ const Navbar = ({ nav, setnav }) => {
         <div className="flex gap-3 justify-between px-5">
           <Link to={"/"}>
             <MdHome
-              className={`h-12 w-12 bg-white rounded-md p-1   ${
+              className={`duration-300 h-12 w-12 bg-white rounded-md p-1   ${
                 location.pathname == "/" && " scale-125"
               } `}
             />{" "}
@@ -169,14 +169,14 @@ const Navbar = ({ nav, setnav }) => {
 
           <Link to={"/todo"}>
             <BsCardChecklist
-              className={`h-12 w-12 bg-white rounded-md p-1   ${
+              className={`duration-300 h-12 w-12 bg-white rounded-md p-1   ${
                 location.pathname == "/todo" && " scale-125"
               } `}
             />
           </Link>
           <Link to={"/community"}>
             <TbBuildingCommunity
-              className={`h-12 w-12 bg-white rounded-md p-1   ${
+              className={`duration-300 h-12 w-12 bg-white rounded-md p-1   ${
                 location.pathname == "/community" && " scale-125"
               } `}
             />
@@ -185,7 +185,7 @@ const Navbar = ({ nav, setnav }) => {
           <AiFillSetting className="h-12 w-12 bg-white rounded-md p-1" />
           <Link to={"/account"}>
             <MdAccountCircle
-              className={`h-12 w-12 bg-white rounded-md p-1  ${
+              className={`duration-300 h-12 w-12 bg-white rounded-md p-1  ${
                 location.pathname == "/account" && " scale-125"
               }`}
             />
