@@ -9,6 +9,7 @@ import { useState } from "react";
 import router from "./routes/Route";
 import { useDispatch, useSelector } from "react-redux";
 import { setlogin, setlogout } from "./features/Auth/authSlice";
+
 function App() {
   const { mode } = useSelector((state) => state.auth);
 
@@ -22,7 +23,6 @@ function App() {
       }
     });
   }, []);
-
   return (
     <div className={`${mode}  `}>
       <RouterProvider router={router}></RouterProvider>;
