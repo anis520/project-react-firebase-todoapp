@@ -95,7 +95,7 @@ const Register = () => {
           </p>
 
           <button
-            className="font-semibold flex items-center justify-center gap-4 border p-1 rounded-md w-8/12 mx-auto"
+            className="font-semibold flex items-center justify-center gap-4 border p-1 rounded-md md:w-8/12 mx-auto"
             onClick={handlegoogleLogin}
           >
             <FcGoogle /> Sign in with google
