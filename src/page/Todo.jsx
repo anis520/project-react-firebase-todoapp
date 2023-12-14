@@ -19,6 +19,7 @@ import {
   GetDate,
   addDocoment,
   deleteDocoment,
+  deleteFile,
   getQueryData,
   updateDocoment,
   uploadFile,
@@ -89,8 +90,12 @@ const Todo = () => {
     setIsExploding([false, null]);
   }, []);
 
+  const delteFilehandler = (data) => {
+    deleteFile(data);
+  };
   const handleDeleteTodo = (data) => {
     deleteDocoment("todos", data);
+    delteFilehandler(data.photo);
   };
 
   const handleupdate = (data) => {
@@ -119,40 +124,47 @@ const Todo = () => {
           value={input.text}
           id=""
           cols="30"
-          className=" bg-slate-100 p-2 border focus:outline-none mb-5 rounded-md  md:w-10/12"
+          className=" bg-slate-100 p-2 border focus:outline-none mb-5 rounded-md w-full  md:w-10/12"
           rows="2"
         ></textarea>
-
-        <label htmlFor="photo">
-          <input
-            type="file"
-            name="photo"
-            id="photo"
-            className="hidden"
-            onChange={(e) => setinput({ ...input, photo: e.target.files[0] })}
-          />
-
-          {input.photo ? (
-            <img
-              className="w-full h-28 object-cover rounded-md md:h-48"
-              src={input.photo && URL.createObjectURL(input.photo)}
-              alt=""
+        <div className="relative">
+          {input.photo && (
+            <button className="absolute top-1 right-1 bg-red-500 text-white rounded-md border p-1">
+              clear
+            </button>
+          )}{" "}
+          <label className=" " htmlFor="photo">
+            <input
+              type="file"
+              name="photo"
+              id="photo"
+              className="hidden"
+              onChange={(e) => setinput({ ...input, photo: e.target.files[0] })}
             />
-          ) : (
-            <MdOutlineAddPhotoAlternate className=" w-64   h-44 md:h-64 border-4 border-black rounded-md  cursor-pointer" />
-          )}
-        </label>
+
+            {input.photo ? (
+              <img
+                className="w-full  h-28 object-cover rounded-md md:h-48"
+                src={input.photo && URL.createObjectURL(input.photo)}
+                alt=""
+              />
+            ) : (
+              <MdOutlineAddPhotoAlternate className=" w-10 block   h-10 md:h-64 border-4 border-black rounded-md  cursor-pointer" />
+            )}
+          </label>
+        </div>
+
         <button
           onClick={handleAddTodo}
-          className="bg-blue-400  w-64 text-white py-1 text-lg rounded-md mt-3"
+          className="bg-blue-400  w-full text-white py-1 text-lg rounded-md mt-3"
         >
           Save
         </button>
       </Modal>
-      <p className="font-semibold text-2xl p-5 dark:text-white">All todos</p>
-      <hr className="" />
-
-      <div className=" m-4 space-y-2 overflow-hidden pb-10 sm:pb-0">
+      <div className="p-2 md:p-5 flex items-center justify-between">
+        <p className="font-semibold text-xl md:text-2xl   dark:text-white">
+          All todos
+        </p>
         <button
           // onClick={() => setmodal(!modal)}
           onClick={() => setmodal(!modal)}
@@ -160,6 +172,10 @@ const Todo = () => {
         >
           Add {}
         </button>
+      </div>
+      <hr className="" />
+
+      <div className=" m-4 space-y-2 overflow-hidden pb-10 sm:pb-0">
         {/* loading start      */}
         {!AllTodo && (
           <h3 className="p-3 bg-slate-200 animate-pulse flex  rounded-md gap-4">
@@ -185,17 +201,17 @@ const Todo = () => {
           onReorder={setAllTodo}
         ><Reorder.Item key={item} value={item}> 
        </Reorder.Item>    </Reorder.Group> */}
-        {AllTodo?.map((item) => {
-          return (
-            <>
+        <div className="mb-10 space-y-2  pb-10">
+          {AllTodo?.map((item) => {
+            return (
               <div
                 key={item.id}
-                className={` bg-slate-300 p-3 rounded-md  ${
+                className={` bg-slate-300 p-1 md:p-3   rounded-md  ${
                   item.status && "opacity-50"
                 } `}
               >
                 <div className="bg-white p-2 rounded-md ">
-                  <div className="float-right w-4/12   sm:w-3/12 p-1 pr-0   md:pr-10 lg:pr-0 flex justify-around md:justify-center  gap-1  md:gap-3">
+                  <div className="float-right w-4/12   sm:w-3/12 p-1 pr-0   md:pr-10 lg:pr-0 flex justify-center  gap-2  md:gap-3">
                     {isExploding[0] == true && isExploding[1] == item.id && (
                       <ConfettiExplosion />
                     )}
@@ -232,9 +248,9 @@ const Todo = () => {
                     </span>
                   </div>
 
-                  <div className=" md:font-semibold text-slate-700 p-2  ">
+                  <div className=" md:font-semibold text-slate-700 md:p-2  ">
                     <p
-                      className={`text-xs ${
+                      className={`text-xs mb-1 font-semibold ${
                         item.time
                           ? "bg-transparent  w-5/12 md:w-2/12"
                           : "bg-gray-200 w-5/12 md:w-2/12 px-2 rounded-md"
@@ -244,8 +260,10 @@ const Todo = () => {
                         ? GetDate(item?.time?.seconds)
                         : "loading . ..  . ."}
                     </p>
-                    <hr className=" w-5/12  md:w-2/12" />
-                    <p className="">{item.text}</p>
+                    <hr className=" w-5/12  md:w-2/12 " />
+                    <p className="text-lg font-semibold">
+                      {item.text ? item.text : "no text"}
+                    </p>
                   </div>
 
                   {item.photo && (
@@ -267,9 +285,9 @@ const Todo = () => {
                   )}
                 </div>
               </div>
-            </>
-          );
-        })}{" "}
+            );
+          })}{" "}
+        </div>
       </div>
     </div>
   );

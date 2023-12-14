@@ -13,7 +13,9 @@ import {
 } from "firebase/firestore";
 import { auth, firebaseapp, storage } from "..";
 import {
+  deleteObject,
   getDownloadURL,
+  getStorage,
   ref,
   uploadBytes,
   uploadBytesResumable,
@@ -132,3 +134,20 @@ export const GetTimeAndDate = (data) => {
 //   alltodo.push({...item.data()})
 // })
 // console.log(alltodo);
+
+// delete file
+export const deleteFile = (link) => {
+  const storage = getStorage();
+
+  // Create a reference to the file to delete
+  const desertRef = ref(storage, link);
+
+  // Delete the file
+  deleteObject(desertRef)
+    .then(() => {
+      // File deleted successfully
+    })
+    .catch((error) => {
+      // Uh-oh, an error occurred!
+    });
+};

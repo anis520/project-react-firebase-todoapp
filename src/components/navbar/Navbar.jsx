@@ -165,11 +165,11 @@ const Navbar = ({ nav, setnav }) => {
       {/* destop navbar  */}
 
       {/* moble navbar */}
-      <div className="sm:hidden z-20   fixed bottom-0 left-0 w-full p-3 bg-indigo-400 rounded-t-3xl ring-2 ring-indigo-400 ring-offset-2 ">
-        <div className="flex gap-3 justify-between px-5">
+      <div className="sm:hidden z-20   fixed bottom-0 left-0 w-full p-2 bg-indigo-400 rounded-t-xl   ">
+        <div className="flex gap-3 justify-between px-4">
           <Link to={"/"}>
             <MdHome
-              className={`duration-300 h-12 w-12 bg-white rounded-md p-1   ${
+              className={`duration-300 h-11 w-11 bg-white rounded-md p-1   ${
                 location.pathname == "/" && " scale-125"
               } `}
             />{" "}
@@ -177,21 +177,21 @@ const Navbar = ({ nav, setnav }) => {
 
           <Link to={"/todo"}>
             <BsCardChecklist
-              className={`duration-300 h-12 w-12 bg-white rounded-md p-1   ${
+              className={`duration-300 h-11 w-11 bg-white rounded-md p-1   ${
                 location.pathname == "/todo" && " scale-125"
               } `}
             />
           </Link>
           <Link to={"/community"}>
             <TbBuildingCommunity
-              className={`duration-300 h-12 w-12 bg-white rounded-md p-1   ${
+              className={`duration-300 h-11 w-11 bg-white rounded-md p-1   ${
                 location.pathname == "/community" && " scale-125"
               } `}
             />
           </Link>
           <Link to={"/setting"}>
             <AiFillSetting
-              className={`duration-300 h-12 w-12 bg-white rounded-md p-1   ${
+              className={`duration-300 h-11 w-11 bg-white rounded-md p-1   ${
                 location.pathname == "/setting" && " scale-125"
               } `}
             />
@@ -199,7 +199,7 @@ const Navbar = ({ nav, setnav }) => {
 
           <Link to={"/account"}>
             <MdAccountCircle
-              className={`duration-300 h-12 w-12 bg-white rounded-md p-1  ${
+              className={`duration-300 h-11 w-11 bg-white rounded-md p-1  ${
                 location.pathname == "/account" && " scale-125"
               }`}
             />

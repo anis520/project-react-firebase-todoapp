@@ -9,7 +9,7 @@ const Layout = () => {
   const [nav, setnav] = useState(true);
 
   return (
-    <div className="flex dark:bg-slate-800 h-screen">
+    <div className="flex dark:bg-slate-800 min-h-screen">
       <Navbar nav={nav} setnav={setnav} />
 
       <div

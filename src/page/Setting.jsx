@@ -23,7 +23,7 @@ const Setting = () => {
             <button
               onClick={handleMode}
               className={`bg-white text-base border-2 px-4   rounded-md font-semibold flex items-center gap-3 py-1  ${
-                mode == "light" && "bg-slate-800 text-white"
+                mode == "light" && "bg-slate-800   "
               }   `}
             >
               Light <BsSun />
@@ -32,7 +32,7 @@ const Setting = () => {
             <button
               onClick={handleMode}
               className={`bg-white text-base border-2 px-4   rounded-md font-semibold flex items-center gap-3 py-1  ${
-                mode == "light" && "bg-slate-800 text-white"
+                mode == "light" && "bg-slate-800  "
               }   `}
             >
               Dark <BsSunFill />
